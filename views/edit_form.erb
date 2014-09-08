@@ -1,0 +1,17 @@
+<h1> <% @micro_post %> </h1>
+
+<form action="/micro_post/<%= @micro_post["id"]%>" method="POST">
+
+  <input type="text" value="<%= @micro_post["blog_title"] %>"
+  name="blog_title">
+</br>
+  <input type="text" value="<%= @micro_post["author"] %>"
+  name="author">
+</br>
+  <input type="text" value="<%= @micro_post["blog_body"] %>"
+  name="blog_body">
+</br>
+<input type="hidden" value="<%= @micro_post["id"] %>" name="id" >
+
+  <input type="submit" value="Update">
+</form>

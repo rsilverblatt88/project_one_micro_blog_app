@@ -27,6 +27,8 @@ class App < Sinatra::Base
 
 # INDEX METHOD
   get('/') do
+# => @micro_posts contains all the keys in redis that contain "micro_posts" and parses them into a hash
+# => so we can pull out the key value pairs to display
     @micro_posts = $redis.keys("*micro_posts*").map { |micro_post| JSON.parse($redis.get(micro_post)) }
     render(:erb, :index)
   end
@@ -44,7 +46,7 @@ class App < Sinatra::Base
       :author => params[:author],
       :blog_body => params[:blog_body],
     }
-    next_id = $redis.incr("micro_post:index")
+    next_id   = $redis.incr("micro_post:index")
     hash[:id] = next_id
     json_hash = hash.to_json
     $redis.set("micro_posts:#{next_id}", json_hash)
@@ -52,6 +54,8 @@ class App < Sinatra::Base
   end
 
 # SHOW METHOD
+# => the :id is passed from the index.erb file
+# => then plugged into @micro_post to retrieve the specific post
   get('/micro_post/:id') do
     id = params[:id]
     @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
@@ -65,5 +69,39 @@ class App < Sinatra::Base
     $redis.del("micro_posts:#{id}")
     redirect to('/')
   end
+
+# UPDATE(edit) METHOD
+  get('/micro_post/:id/edit') do
+    id = params[:id]
+    @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
+    render(:erb, :edit_form)
+  end
+
+  post('/micro_post/:id') do
+    updated_hash = {
+      :blog_title => params["blog_title"],
+      :author => params["author"],
+      :blog_body => params["blog_body"],
+      :id => params["id"]
+    }
+    id = params[:id]
+    json_hash = updated_hash.to_json
+    $redis.set("micro_posts:#{id}", json_hash)
+    redirect to('/')
+  end
+
+  #################################
+  #        API
+  #################################
+
+# http://api.nytimes.com/svc/search/v2/articlesearch.response-format?[q=search term&
+# fq=filter-field:(filter-term)&additional-params=values]&api-key=####
+  # get('/nyt_api') do
+  #   base_url      = "http://api.nytimes.com/svc/search/v2/articlesearch"
+  #   nyt_key       = "ccb4fa2bd149de8f7ec969bf1034a03c:13:69768931"
+  #   response      = HTTParty.get("#{base_url}.json?[q=tech&fq=source:("The New York Times")]&api-key=#{nyt_key}")
+  #   binding.pry
+  #   render(:erb, :nyt_api)
+  # end
 
 end

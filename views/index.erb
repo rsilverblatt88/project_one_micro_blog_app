@@ -2,39 +2,26 @@
 
 <!-- @micro_posts = $redis.keys("*micro_posts*").map { |micro_post| JSON.parse($redis.get(micro_post)) } -->
 
-
-<!-- @micro_posts = [
-                  { "blog_title"=>"Dannys post numero dos",
-                    "author"=>"Danny",
-                    "blog_body"=>"Hey I hope this works!",
-                    "id"=>2
-                  },
-                  { "blog_title"=>"Robs First Post",
-                    "author"=>"Rob",
-                    "blog_body"=>"YO, DOES THIS WORK?", "id"=>1
-                  }
-              ] -->
-<form method="GET" action="/micro_post/post_id">
-  <label for="name">Specific Post:</label>
-  <input type="text" name="specific_post" id="name" />
-
-  <input type="submit" value="Find"/>
-</form>
-
 <% p @micro_posts %>
 <div class="posts" id="many_posts">
   <%
+  # => the .each loop goes through each post so we can access the key value pairs
       @micro_posts.each do |micro_post|
+  # => id is a variable set as the posts ID
       id = micro_post["id"]
+  # => link blogs the ID into the path to access the specific post
       link = "/micro_post/#{id}"
-
    %>
     <div class="post">
-
-      <a href = <%= link %>>
+<!--  STILL WITHIN THE LOOP
+      this div class displays the post
+      a href wraps the blog title as a link to the individual post
+The link variable contains a path with the post :id which was grabbed from the hash. We are using the :id value to plug into the show route to show the specific post
+    -->
+      <a href = <%= link %> >
         <h1><%= micro_post["blog_title"] %></h1>
       </a>
-      <p><%= micro_post["author"] %></p>
+      <p>by: <%= micro_post["author"] %></p>
       <div class="body">
         <%= micro_post["blog_body"] %>
 
