@@ -1,0 +1,10 @@
+<div class="micro_post">
+  <h1><%= @micro_post["blog_title"] %></h1>
+  <p><%= @micro_post["author"] %></p>
+  <div><%= @micro_post["blog_body"] %></div>
+</div>
+<% id = @micro_post["id"] %>
+<form action=<%= "/micro_post/#{id}"%> method="POST">
+  <input type="hidden" name="_method" value="DELETE">
+  <input type="submit" value="Delete">
+</form>

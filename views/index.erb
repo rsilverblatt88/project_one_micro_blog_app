@@ -1,1 +1,47 @@
-<h1>Hello World</h1>
+<a href = "/micro_post/new">Create Post</a>
+
+<!-- @micro_posts = $redis.keys("*micro_posts*").map { |micro_post| JSON.parse($redis.get(micro_post)) } -->
+
+
+<!-- @micro_posts = [
+                  { "blog_title"=>"Dannys post numero dos",
+                    "author"=>"Danny",
+                    "blog_body"=>"Hey I hope this works!",
+                    "id"=>2
+                  },
+                  { "blog_title"=>"Robs First Post",
+                    "author"=>"Rob",
+                    "blog_body"=>"YO, DOES THIS WORK?", "id"=>1
+                  }
+              ] -->
+<form method="GET" action="/micro_post/post_id">
+  <label for="name">Specific Post:</label>
+  <input type="text" name="specific_post" id="name" />
+
+  <input type="submit" value="Find"/>
+</form>
+
+<% p @micro_posts %>
+<div class="posts" id="many_posts">
+  <%
+      @micro_posts.each do |micro_post|
+      id = micro_post["id"]
+      link = "/micro_post/#{id}"
+
+   %>
+    <div class="post">
+
+      <a href = <%= link %>>
+        <h1><%= micro_post["blog_title"] %></h1>
+      </a>
+      <p><%= micro_post["author"] %></p>
+      <div class="body">
+        <%= micro_post["blog_body"] %>
+
+      </div>
+    </div>
+
+  <% end %>
+</div>
+
+

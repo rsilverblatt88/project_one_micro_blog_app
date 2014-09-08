@@ -1,24 +1,17 @@
 require 'sinatra/base'
 require 'pry'
 require 'redis'
+require 'json'
+require 'httparty'
 
 class App < Sinatra::Base
 
-  ########################
-  # Configuration
-  ########################
-  NYT_KEY       = "ccb4fa2bd149de8f7ec969bf1034a03c:13:69768931"
-  CLIENT_ID     = "29c059fa13494b009f4f4a59658f9e18"
-  CLIENT_SECRET = "61d19061e8d542898bed0008778a3f94"
-  WEBSITE_URL   = "http://localhost:9292"
-  REDIRECT_URI  = "http://localhost:9292/oath_callback"
-
+########### CONFIGS ############
   configure do
     enable :logging
     enable :method_override
     enable :sessions
     $redis = Redis.new
-    @@test = []
   end
 
   before do
@@ -30,33 +23,47 @@ class App < Sinatra::Base
     logger.info "Response Headers: #{response.headers}"
   end
 
-  ########################
-  # Routes (GETS)
-  ########################
+############### CONTROLER ###############
 
+# INDEX METHOD
   get('/') do
+    @micro_posts = $redis.keys("*micro_posts*").map { |micro_post| JSON.parse($redis.get(micro_post)) }
     render(:erb, :index)
   end
 
-  get('/post_new') do
+# NEW METHOD
+  get('/micro_post/new') do
     render(:erb, :post_new)
   end
 
-  get('/oath_callback') do
-  end
 
-  ########################
-  # Routes (POSTS)
-  ########################
-
-  post('/post_new') do
-    new_post = {
+# CREATE METHOD
+  post('/micro_post') do
+    hash = {
       :blog_title => params[:blog_title],
       :author => params[:author],
       :blog_body => params[:blog_body],
     }
-    $redis.set(1,"#{new_post}")
-    binding.pry
+    next_id = $redis.incr("micro_post:index")
+    hash[:id] = next_id
+    json_hash = hash.to_json
+    $redis.set("micro_posts:#{next_id}", json_hash)
+    redirect to('/')
+  end
+
+# SHOW METHOD
+  get('/micro_post/:id') do
+    id = params[:id]
+    @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
+    render(:erb, :show)
+  end
+
+# DELETE METHOD
+
+  delete('/micro_post/:id') do
+    id = params[:id]
+    $redis.del("micro_posts:#{id}")
+    redirect to('/')
   end
 
 end

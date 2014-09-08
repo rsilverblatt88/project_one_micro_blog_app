@@ -1,0 +1,8 @@
+<!-- ADD AN IF STATEMENT SO IF THE VALUE IS NOT INCLUDED, IT POSTS "DOES NOT EXIST" -->
+
+<article class="specific_post">
+  <h1> <% hash = JSON.parse $redis.get(title)%></h1>
+  <h1> <%= hash["blog_title"] %> </h1>
+  <h4> By: <%= hash["author"] %> </h4>
+  <body> <%= hash["blog_body"] %> </body>
+</article>
