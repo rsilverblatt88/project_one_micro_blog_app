@@ -132,6 +132,10 @@ end
     $redis.set("micro_posts:#{id}", json_hash)
   end
 
+  def create_new_micro_post(title, author, body, tags)
+    next_id = $redis.incr("micro_post:index")
+    set_micro_post(next_id, title, author, body, tags)
+  end
 
   #################################
   #        API
