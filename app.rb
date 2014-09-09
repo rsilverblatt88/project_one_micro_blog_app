@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'pry'
+# require 'pry'
 require 'redis'
 require 'json'
 require 'httparty'

@@ -13,7 +13,7 @@ group :development do
 end
 
 group :production do
-  # gems specific just in the production environment
+  # gems specific just in the production environments
 end
 
 group :test do
