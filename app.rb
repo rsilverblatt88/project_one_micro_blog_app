@@ -11,7 +11,7 @@ class App < Sinatra::Base
     enable :logging
     enable :method_override
     enable :sessions
-    $redis = Redis.new
+    $redis = Redis.new(:url => ENV["REDISTOGO_URL"])
   end
 
   before do
