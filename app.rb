@@ -29,7 +29,16 @@ class App < Sinatra::Base
   get('/') do
 # => @micro_posts contains all the keys in redis that contain "micro_posts" and parses them into a hash
 # => so we can pull out the key value pairs to display
-    @micro_posts = $redis.keys("*micro_posts*").map { |micro_post| JSON.parse($redis.get(micro_post)) }
+
+    title = params["blog_title"]
+    if title.nil?
+      @micro_posts = all_micro_posts
+    else
+      @micro_posts = all_micro_posts.select do |micro_post|
+        # TODO: this is case-sensitive (and ugly)! let's change it to regex
+        micro_post["blog_title"].downcase.match(title.downcase)
+      end
+    end
     render(:erb, :index)
   end
 
@@ -64,7 +73,13 @@ class App < Sinatra::Base
 
 # SEARCH BY TITLE METHOD
 get('/title') do
-  title = params["blog_title"]
+  title       = params["blog_title"]
+  micro_posts = all_micro_posts
+  found_micro_posts = micro_posts.select do |micro_post|
+    # TODO: this is case-sensitive (and ugly)! let's change it to regex
+    micro_post["blog_title"].downcase.match(title.downcase)
+  end
+
 
 end
 
@@ -110,6 +125,14 @@ end
     }
     $redis.set("micro_posts:#{id}", updated_hash.to_json)
     redirect to("/")
+  end
+
+  ############# HELPERS ##############
+
+  def all_micro_posts
+    $redis.keys("*micro_posts*").map do |key|
+      JSON.parse($redis.get(key))
+    end
   end
 
 
