@@ -41,7 +41,7 @@ class App < Sinatra::Base
 
 # CREATE METHOD
   post('/micro_post') do
-    hash = {
+    hash  = {
       :blog_title => params[:blog_title],
       :author => params[:author],
       :blog_body => params[:blog_body],
@@ -84,7 +84,7 @@ class App < Sinatra::Base
       :blog_body => params["blog_body"],
       :id => params["id"]
     }
-    id = params[:id]
+    id        = params[:id]
     json_hash = updated_hash.to_json
     $redis.set("micro_posts:#{id}", json_hash)
     redirect to('/')
@@ -94,14 +94,20 @@ class App < Sinatra::Base
   #        API
   #################################
 
-# http://api.nytimes.com/svc/search/v2/articlesearch.response-format?[q=search term&
-# fq=filter-field:(filter-term)&additional-params=values]&api-key=####
   # get('/nyt_api') do
   #   base_url      = "http://api.nytimes.com/svc/search/v2/articlesearch"
   #   nyt_key       = "ccb4fa2bd149de8f7ec969bf1034a03c:13:69768931"
-  #   response      = HTTParty.get("#{base_url}.json?[q=tech&fq=source:("The New York Times")]&api-key=#{nyt_key}")
+  #   @response     = HTTParty.get("#{base_url}.json?q=tech&fq=source:+new+york+times&api-key=#{nyt_key}").to_json
+  #   @parsed_nyt   = JSON.parse(@response)
+  #   @simple_nyt   = @parsed_nyt["response"]["docs"]
   #   binding.pry
   #   render(:erb, :nyt_api)
   # end
+
+  #nyt_api.erb file :
+  # <% @simple_nyt.each do |simple| %>
+  # <h1> <%= simple["web_url"] %>
+  # <% end %>
+
 
 end

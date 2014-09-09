@@ -1,5 +1,11 @@
 <a href = "/micro_post/new">Create Post</a>
 
+<!-- Search for post by index # -->
+<!-- <form method="GET" action="/micro_post/">
+  <input type="text" name="id">
+  <input type="submit" value="search">
+</form> -->
+
 <!-- @micro_posts = $redis.keys("*micro_posts*").map { |micro_post| JSON.parse($redis.get(micro_post)) } -->
 
 <% p @micro_posts %>
