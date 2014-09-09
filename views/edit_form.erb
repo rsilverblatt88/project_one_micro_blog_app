@@ -2,16 +2,28 @@
 
 <form action="/micro_post/<%= @micro_post["id"]%>" method="POST">
 
+  <label for="name">Title&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</label>
   <input type="text" value="<%= @micro_post["blog_title"] %>"
-  name="blog_title">
-</br>
+  name="blog_title" class="small_form">
+    </br>
+    </br>
+  <label for="name">Author</label>
   <input type="text" value="<%= @micro_post["author"] %>"
-  name="author">
-</br>
+  name="author" class="small_form">
+    </br>
+    </br>
+  <label for="name">Body&nbsp;&nbsp;&nbsp;</label>
+
+  <!-- Renders text for input -->
   <input type="text" value="<%= @micro_post["blog_body"] %>"
-  name="blog_body">
-</br>
+  name="blog_body" class="blog_body">
+
+<!-- Does NOT render text for input -->
+  <textarea type="text" name="blog_body" id="blog_body" class="blog_body" value="<%= @micro_post["blog_body"] %>" cols="30" rows="10"></textarea>
+
+    </br>
+
 <input type="hidden" value="<%= @micro_post["id"] %>" name="id" >
 
-  <input type="submit" value="Update">
+  <input type="submit" value="Update" class="button">
 </form>

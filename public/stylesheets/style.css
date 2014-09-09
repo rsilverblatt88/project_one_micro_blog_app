@@ -1,0 +1,28 @@
+/*Styles ALL my pages*/
+html{
+  background-image: url(http://p1.pichost.me/i/5/1282860.jpg);
+  color: green;
+  font-family: 'Varela Round', sans-serif;
+}
+
+/*Styles all my links*/
+a{
+  color: white;
+}
+
+/*Styles all my buttons*/
+.button{
+  color: black;
+}
+
+/*Styles all the larger forms*/
+.blog_body{
+  height: 200px;
+  width: 400px;
+  vertical-align: top;
+}
+
+/*Styles all the single line forms*/
+.small_form{
+  width:400px;
+}

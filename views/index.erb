@@ -1,4 +1,13 @@
 <a href = "/micro_post/new">Create Post</a>
+<form method="GET" action="/title">
+
+  <label for="name">Search by Title</label>
+  <input type="text" name="blog_title" id="name"/>
+
+
+  <input type="submit" value="SEARCH" class="button" class="small_form"/>
+
+</form>
 
 <!-- Search for post by index # -->
 <!-- <form method="GET" action="/micro_post/">
@@ -25,7 +34,7 @@
 The link variable contains a path with the post :id which was grabbed from the hash. We are using the :id value to plug into the show route to show the specific post
     -->
       <a href = <%= link %> >
-        <h1><%= micro_post["blog_title"] %></h1>
+        <h1><strong><%= micro_post["blog_title"] %></strong></h1>
       </a>
       <p>by: <%= micro_post["author"] %></p>
       <div class="body">

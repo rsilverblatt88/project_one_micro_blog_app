@@ -62,6 +62,12 @@ class App < Sinatra::Base
     render(:erb, :show)
   end
 
+# SEARCH BY TITLE METHOD
+get('/title') do
+  title = params["blog_title"]
+
+end
+
 # DELETE METHOD
 
   delete('/micro_post/:id') do
@@ -77,6 +83,7 @@ class App < Sinatra::Base
     render(:erb, :edit_form)
   end
 
+#UPDATE POST ROUTE
   post('/micro_post/:id') do
     updated_hash = {
       :blog_title => params["blog_title"],
@@ -89,6 +96,22 @@ class App < Sinatra::Base
     $redis.set("micro_posts:#{id}", json_hash)
     redirect to('/')
   end
+
+  #ADD TAGS
+
+  post('/add_tag/:id') do
+    id   = params[:id]
+    updated_hash = {
+      :blog_title => params["blog_title"],
+      :author => params["author"],
+      :blog_body => params["blog_body"],
+      :id => params["id"],
+      :tags => params["tags"],
+    }
+    $redis.set("micro_posts:#{id}", updated_hash.to_json)
+    redirect to("/")
+  end
+
 
   #################################
   #        API

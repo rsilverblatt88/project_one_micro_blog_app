@@ -1,4 +1,17 @@
-project_one_micro_blog_app
+Project 1
+name: Rob's Blog
+description: Rob's blog will be a blog about the hurdles I faced throughout the project. Each post will have the issue I faced, along with a description of the solution.
+
+API's
+1: New York Times(possibly)
+
+Gems
+1: Sinatra - Framework
+2: Redis - Database
+
+Directions
+The blog on requires the above gems to run.
+
 
 USER STORIES
 
@@ -7,8 +20,3 @@ The user will be able to use the blog to Create posts, Read posts, Update(edit) 
 
 
 The user will be able to view a specified number of posts at one time.
-
-
-
-API
-The user will be able to view the current weather conditions in the blog post location.
