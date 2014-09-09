@@ -47,29 +47,21 @@ class App < Sinatra::Base
     render(:erb, :post_new)
   end
 
-
 # CREATE METHOD
   post('/micro_post') do
-    hash  = {
-      :blog_title => params[:blog_title],
-      :author => params[:author],
-      :blog_body => params[:blog_body],
-    }
-    next_id   = $redis.incr("micro_post:index")
-    hash[:id] = next_id
-    json_hash = hash.to_json
-    $redis.set("micro_posts:#{next_id}", json_hash)
+    next_id = $redis.incr("micro_post:index")
+    set_micro_post(next_id, params[:blog_title], params[:author], params[:blog_body], [])
     redirect to('/')
   end
 
 # SHOW METHOD
 # => the :id is passed from the index.erb file
 # => then plugged into @micro_post to retrieve the specific post
-  get('/micro_post/:id') do
-    id = params[:id]
-    @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
-    render(:erb, :show)
-  end
+get('/micro_post/:id') do
+  id = params[:id]
+  @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
+  render(:erb, :show)
+end
 
 # SEARCH BY TITLE METHOD
 get('/title') do
@@ -100,30 +92,23 @@ end
 
 #UPDATE POST ROUTE
   post('/micro_post/:id') do
-    updated_hash = {
-      :blog_title => params["blog_title"],
-      :author => params["author"],
-      :blog_body => params["blog_body"],
-      :id => params["id"]
-    }
-    id        = params[:id]
-    json_hash = updated_hash.to_json
-    $redis.set("micro_posts:#{id}", json_hash)
+    set_micro_post(params["id"], params["blog_title"], params["author"], params["blog_body"], params["tags"])
+    # updated_hash = {
+    #   :blog_title => params["blog_title"],
+    #   :author => params["author"],
+    #   :blog_body => params["blog_body"],
+    #   :id => params["id"]
+    # }
+    # id        = params[:id]
+    # json_hash = updated_hash.to_json
+    # $redis.set("micro_posts:#{id}", json_hash)
     redirect to('/')
   end
 
   #ADD TAGS
 
   post('/add_tag/:id') do
-    id   = params[:id]
-    updated_hash = {
-      :blog_title => params["blog_title"],
-      :author => params["author"],
-      :blog_body => params["blog_body"],
-      :id => params["id"],
-      :tags => params["tags"],
-    }
-    $redis.set("micro_posts:#{id}", updated_hash.to_json)
+    set_micro_post(params["id"], params["blog_title"], params["author"], params["blog_body"], params["tags"])
     redirect to("/")
   end
 
@@ -133,6 +118,18 @@ end
     $redis.keys("*micro_posts*").map do |key|
       JSON.parse($redis.get(key))
     end
+  end
+
+  def set_micro_post(id, title, author, body, tags)
+    hash  = {
+      :blog_title => title,
+      :author     => author,
+      :blog_body  => body,
+      :id         => id,
+      :tags       => tags
+    }
+    json_hash = hash.to_json
+    $redis.set("micro_posts:#{id}", json_hash)
   end
 
 
