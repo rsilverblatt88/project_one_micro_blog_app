@@ -61,7 +61,7 @@ body{
 .header-image {
   width: 100%;
   height: 250px;
-  border: 10px solid #000000;
+  border: 10px solid rgba(228, 228, 228, 0.48);
   position: relative;
 }
 
