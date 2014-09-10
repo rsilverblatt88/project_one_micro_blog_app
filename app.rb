@@ -1,6 +1,6 @@
 require 'sinatra/base'
 #PRY must be removed when pushing to Heroku
-# require 'pry'
+require 'pry'
 require 'redis'
 require 'json'
 require 'httparty'
@@ -36,6 +36,7 @@ class App < Sinatra::Base
       @micro_posts = all_micro_posts
     else
       @micro_posts = all_micro_posts.select do |micro_post|
+
         # TODO: this is case-sensitive (and ugly)! let's change it to regex
         micro_post["blog_title"].downcase.match(title.downcase)
       end
@@ -93,6 +94,7 @@ end
 
 #UPDATE POST ROUTE
   post('/micro_post/:id') do
+    id = params[:id]
     set_micro_post(params["id"], params["blog_title"], params["author"], params["blog_body"], params["tags"])
     # updated_hash = {
     #   :blog_title => params["blog_title"],
@@ -109,8 +111,9 @@ end
   #ADD TAGS
 
   post('/add_tag/:id') do
+    id = params[:id]
     set_micro_post(params["id"], params["blog_title"], params["author"], params["blog_body"], params["tags"])
-    redirect to("/")
+    redirect to("/micro_post/#{id}")
   end
 
   #ADD COMMENTS
