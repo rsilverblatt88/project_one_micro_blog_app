@@ -9,11 +9,24 @@
 <% id = @micro_post["id"] %>
 
 <form action=<%= "/add_tag/#{id}" %> method="POST">
+  <label for="tags">Add Tags&nbsp;&nbsp;&nbsp;&nbsp;</label>
   <input type="text" name="tags" class="small_form">
   <input type="hidden" name="blog_title" value="<%= @micro_post["blog_title"]%>" >
   <input type="hidden" name="author" value="<%= @micro_post["author"] %>" >
   <input type="hidden" name="blog_body" value="<%= @micro_post["blog_body"] %>" >
+</br>
   <input type="submit", value="Add Tags">
+</form>
+
+<form action=<%= "/micro_post/#{id}/comments" %> method="POST">
+  <label for="username">Username&nbsp;&nbsp;</label>
+  <input type="text" name="username" class="small_form">
+</br>
+</br>
+  <label for="comments">Comments&nbsp;</label>
+  <input type="text" name="comment" class="small_form">
+</br>
+  <input type="submit" value="Comment">
 </form>
 
 

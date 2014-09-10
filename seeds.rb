@@ -9,7 +9,7 @@ $redis.flushdb
 $redis.set("micro_post:index", 0)
 
 
-def set_micro_post(id, title, author, body, tags)
+  def set_micro_post(id, title, author, body, tags)
     hash  = {
       :blog_title => title,
       :author     => author,

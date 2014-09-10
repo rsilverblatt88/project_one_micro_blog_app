@@ -1,4 +1,5 @@
 require 'sinatra/base'
+#PRY must be removed when pushing to Heroku
 # require 'pry'
 require 'redis'
 require 'json'
@@ -112,8 +113,22 @@ end
     redirect to("/")
   end
 
-  ############# HELPERS ##############
+  #ADD COMMENTS
+  post('/micro_post/:id/comments')do
+  id = params[:id]
+  @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
+  @micro_post["comments"] = Array.new
+  comment = {
+    "user_name" => params["username"],
+    "comment" => params["comment"],
+  }
+  @micro_post["comments"].push(comment)
+  $redis.set("micro_posts:#{id}", @micro_post.to_json)
+  redirect to("/micro_post/#{id}")
+  end
 
+  ############# HELPERS ##############
+# => Finds all the keys containing micro_posts and parses them back into a HASH.
   def all_micro_posts
     $redis.keys("*micro_posts*").map do |key|
       JSON.parse($redis.get(key))
