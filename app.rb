@@ -1,6 +1,6 @@
 require 'sinatra/base'
 #PRY must be removed when pushing to Heroku
-require 'pry'
+# require 'pry'
 require 'redis'
 require 'json'
 require 'httparty'
