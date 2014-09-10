@@ -11,6 +11,10 @@ a{
   color: white;
 }
 
+body{
+  margin: 0 auto;
+  max-width: 1200px;
+}
 
 /************* DIVS **************/
 
@@ -36,6 +40,8 @@ a{
 
 .article{
   padding: 20px 0px 20px 20px;
+  margin: 5 auto;
+  max-width: 1400px;
 
 }
 
@@ -59,9 +65,22 @@ a{
   position: relative;
 }
 
+.list-nav {
+  display: inline;
+}
+
 #wrapper-header {
   width: 100%;
   text-align: center;
   z-index: 1;
 }
+
+#list-nav {
+  margin: 20px;
+  padding: 0;
+  list-style: none;
+  width: 525px;
+}
+
+
 

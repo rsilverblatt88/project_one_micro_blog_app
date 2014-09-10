@@ -8,6 +8,16 @@
 
 <% id = @micro_post["id"] %>
 
+<ul id="list-nav">
+  <li class="b">
+    <a href=<%= "/micro_post/#{id}/edit" %>> Edit Post </a>
+    <form action=<%= "/micro_post/#{id}"%> method="POST">
+      <input type="hidden" name="_method" value="DELETE">
+      <input type="submit" value="Delete Post" class="button">
+    </form>
+  </li>
+</ul>
+
 <!-- ADD HASH TAGS -->
 <form action=<%= "/add_tag/#{id}" %> method="POST">
   <label for="tags">Add Tags&nbsp;&nbsp;&nbsp;&nbsp;</label>
@@ -27,14 +37,7 @@
 </br>
   <label for="comments">Comments&nbsp;</label>
   <input type="text" name="comment" class="small_form">
-</br>
   <input type="submit" value="Comment" class="button">
 </form>
 
 
-<a href=<%= "/micro_post/#{id}/edit" %>> Edit Post </a>
-
-<form action=<%= "/micro_post/#{id}"%> method="POST">
-  <input type="hidden" name="_method" value="DELETE">
-  <input type="submit" value="Delete" class="button">
-</form>
