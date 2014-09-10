@@ -59,15 +59,15 @@ class App < Sinatra::Base
 # => the :id is passed from the index.erb file
 # => then plugged into @micro_post to retrieve the specific post
 get('/micro_post/:id') do
-  id = params[:id]
+  id          = params[:id]
   @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
   render(:erb, :show)
 end
 
 # SEARCH BY TITLE METHOD
 get('/title') do
-  title       = params["blog_title"]
-  micro_posts = all_micro_posts
+  title             = params["blog_title"]
+  micro_posts       = all_micro_posts
   found_micro_posts = micro_posts.select do |micro_post|
     # TODO: this is case-sensitive (and ugly)! let's change it to regex
     micro_post["blog_title"].downcase.match(title.downcase)
@@ -86,7 +86,7 @@ end
 
 # UPDATE(edit) METHOD
   get('/micro_post/:id/edit') do
-    id = params[:id]
+    id          = params[:id]
     @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
     render(:erb, :edit_form)
   end
@@ -115,12 +115,12 @@ end
 
   #ADD COMMENTS
   post('/micro_post/:id/comments')do
-  id = params[:id]
-  @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
+  id            = params[:id]
+  @micro_post   = JSON.parse $redis.get("micro_posts:#{id}")
   @micro_post["comments"] = Array.new
-  comment = {
-    "user_name" => params["username"],
-    "comment" => params["comment"],
+  comment       = {
+          "user_name" => params["username"],
+          "comment" => params["comment"],
   }
   @micro_post["comments"].push(comment)
   $redis.set("micro_posts:#{id}", @micro_post.to_json)

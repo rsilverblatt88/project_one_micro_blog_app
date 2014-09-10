@@ -1,14 +1,18 @@
 /*Styles ALL my pages*/
 html{
   background-image: url(http://p1.pichost.me/i/5/1282860.jpg);
-  color: green;
+  color: rgba(228, 228, 228, 0.48);
   font-family: 'Varela Round', sans-serif;
+  padding: 0px 0px 30px 20px;
 }
 
 /*Styles all my links*/
 a{
   color: white;
 }
+
+
+/************* DIVS **************/
 
 /*Styles all my buttons*/
 .button{
@@ -24,5 +28,23 @@ a{
 
 /*Styles all the single line forms*/
 .small_form{
-  width:400px;
+  width: 400px;
+}
+
+.article{
+  padding: 20px 0px 20px 0px;
+
+}
+
+.blog-heading {
+  font-size: 2em;
+}
+
+.blog-author {
+  font-size: 0.75em;
+}
+
+.blog-body {
+  font-size: 1em;
+  width: 500px;
 }

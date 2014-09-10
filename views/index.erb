@@ -27,20 +27,17 @@
   # => link blogs the ID into the path to access the specific post
       link = "/micro_post/#{id}"
    %>
-    <div class="post">
+    <div class="article">
 <!--  STILL WITHIN THE LOOP
       this div class displays the post
       a href wraps the blog title as a link to the individual post
 The link variable contains a path with the post :id which was grabbed from the hash. We are using the :id value to plug into the show route to show the specific post
     -->
-      <a href = <%= link %> >
-        <h1><strong><%= micro_post["blog_title"] %></strong></h1>
+      <a href=<%= link %> >
+        <div class="blog-heading"><%= micro_post["blog_title"] %></div>
       </a>
-      <p>by: <%= micro_post["author"] %></p>
-      <div class="body">
-        <%= micro_post["blog_body"] %>
-
-      </div>
+        <div class="blog-author">by: <%= micro_post["author"] %></div>
+        <div class="blog-body"> <%= micro_post["blog_body"] %></div>
     </div>
 
   <% end %>
