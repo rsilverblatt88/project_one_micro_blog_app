@@ -41,12 +41,12 @@ class App < Sinatra::Base
         micro_post["blog_title"].downcase.match(title.downcase)
       end
     end
-    render(:erb, :index)
+    render(:erb, :"blog_posts/index")
   end
 
 # NEW METHOD
   get('/micro_post/new') do
-    render(:erb, :post_new)
+    render(:erb, :"blog_posts/new")
   end
 
 # CREATE METHOD
@@ -62,7 +62,7 @@ class App < Sinatra::Base
 get('/micro_post/:id') do
   id          = params[:id]
   @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
-  render(:erb, :show)
+  render(:erb, :"blog_posts/show")
 end
 
 # SEARCH BY TITLE METHOD
@@ -89,7 +89,7 @@ end
   get('/micro_post/:id/edit') do
     id          = params[:id]
     @micro_post = JSON.parse $redis.get("micro_posts:#{id}")
-    render(:erb, :edit_form)
+    render(:erb, :"blog_posts/edit")
   end
 
 #UPDATE POST ROUTE
