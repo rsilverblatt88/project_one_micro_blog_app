@@ -119,9 +119,9 @@ end
   #ADD COMMENTS
   post('/micro_post/:id/comments')do
   id            = params[:id]
-  @micro_post   = JSON.parse $redis.get("micro_posts:#{id}")
+  @micro_post   = JSON.parse($redis.get("micro_posts:#{id}"))
   @micro_post["comments"] = Array.new
-  comment       = {
+  comment = {
           "user_name" => params["username"],
           "comment" => params["comment"],
   }
