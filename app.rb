@@ -1,31 +1,9 @@
-require 'sinatra/base'
-#PRY must be removed when pushing to Heroku
-# require 'pry'
-require 'redis'
-require 'json'
-require 'httparty'
+require './application_controller'
+class App < ApplicationController
 
-class App < Sinatra::Base
 
-########### CONFIGS ############
-  configure do
-    enable :logging
-    enable :method_override
-    enable :sessions
-    $redis = Redis.new(:url => ENV["REDISTOGO_URL"])
-  end
-
-  before do
-    logger.info "Request Headers: #{headers}"
-    logger.warn "Params: #{params}"
-  end
-
-  after do
-    logger.info "Response Headers: #{response.headers}"
-  end
 
 ############### CONTROLER ###############
-
 # INDEX METHOD
   get('/') do
 # => @micro_posts contains all the keys in redis that contain "micro_posts" and parses them into a hash
