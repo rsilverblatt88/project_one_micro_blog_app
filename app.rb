@@ -1,7 +1,7 @@
 require './application_controller'
 class App < ApplicationController
 
-
+  NYT_KEY    = ENV["NYT_ALL_SEARCH_KEY"]
 
 ############### CONTROLER ###############
 # INDEX METHOD
@@ -47,7 +47,7 @@ end
 get('/title') do
   title             = params["blog_title"]
   micro_posts       = all_micro_posts
-  found_micro_posts = micro_posts.select do |micro_post|
+  micro_posts.select do |micro_post|
     # TODO: this is case-sensitive (and ugly)! let's change it to regex
     micro_post["blog_title"].downcase.match(title.downcase)
   end
@@ -72,7 +72,6 @@ end
 
 #UPDATE POST ROUTE
   post('/micro_post/:id') do
-    id = params[:id]
     set_micro_post(params["id"], params["blog_title"], params["author"], params["blog_body"], params["tags"])
     # updated_hash = {
     #   :blog_title => params["blog_title"],
@@ -108,49 +107,21 @@ end
   redirect to("/micro_post/#{id}")
   end
 
-  ############# HELPERS ##############
-# => Finds all the keys containing micro_posts and parses them back into a HASH.
-  def all_micro_posts
-    $redis.keys("*micro_posts*").map do |key|
-      JSON.parse($redis.get(key))
-    end
-  end
-
-  def set_micro_post(id, title, author, body, tags)
-    hash  = {
-      :blog_title => title,
-      :author     => author,
-      :blog_body  => body,
-      :id         => id,
-      :tags       => tags
-    }
-    json_hash = hash.to_json
-    $redis.set("micro_posts:#{id}", json_hash)
-  end
-
-  def create_new_micro_post(title, author, body, tags)
-    next_id = $redis.incr("micro_post:index")
-    set_micro_post(next_id, title, author, body, tags)
-  end
 
   #################################
   #        API
   #################################
 
-  # get('/nyt_api') do
-  #   base_url      = "http://api.nytimes.com/svc/search/v2/articlesearch"
-  #   nyt_key       = "ccb4fa2bd149de8f7ec969bf1034a03c:13:69768931"
-  #   @response     = HTTParty.get("#{base_url}.json?q=tech&fq=source:+new+york+times&api-key=#{nyt_key}").to_json
-  #   @parsed_nyt   = JSON.parse(@response)
-  #   @simple_nyt   = @parsed_nyt["response"]["docs"]
-  #   binding.pry
-  #   render(:erb, :nyt_api)
-  # end
+  get('/news_api') do
+    base_url      = "http://api.nytimes.com/svc/search/v2/articlesearch"
+    @response     = HTTParty.get("#{base_url}.json?q=tech&fq=source:+new+york+times&api-key=#{NYT_KEY}")
+    @simple_nyt   = @response["response"]["docs"]
+    render(:erb, :news_api)
+  end
 
-  #nyt_api.erb file :
-  # <% @simple_nyt.each do |simple| %>
-  # <h1> <%= simple["web_url"] %>
-  # <% end %>
+
+
+
 
 
 end

@@ -1,11 +1,14 @@
-require 'sinatra/base'
+require './helpers/application_helper'
+# require 'sinatra/base'
 #PRY must be removed when pushing to Heroku
 # require 'pry'
-require 'redis'
+# require 'redis'
 require 'json'
-require 'httparty'
+# require 'httparty'
 
 class ApplicationController < Sinatra::Base
+
+  helpers ApplicationHelper
 
 ########### CONFIGS ############
   configure do
