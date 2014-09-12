@@ -1,7 +1,7 @@
 require './application_controller'
 class App < ApplicationController
 
-  NYT_KEY    = ENV["NYT_ALL_SEARCH_KEY"]
+
 
 ############### CONTROLER ###############
 # INDEX METHOD
@@ -113,10 +113,8 @@ end
   #################################
 
   get('/news_api') do
-    base_url      = "http://api.nytimes.com/svc/search/v2/articlesearch"
-    @response     = HTTParty.get("#{base_url}.json?q=tech&fq=source:+new+york+times&api-key=#{NYT_KEY}")
-    @simple_nyt   = @response["response"]["docs"]
-    render(:erb, :news_api)
+    nyt_api(params[:search_word])
+    render(:erb, :api)
   end
 
 
